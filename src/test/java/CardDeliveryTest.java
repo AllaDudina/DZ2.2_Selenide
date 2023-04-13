@@ -1,6 +1,8 @@
 import com.codeborne.selenide.Condition;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,11 +13,16 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class CardDeliveryTest {
 
-    LocalDate currentDate = LocalDate.now();
-    LocalDate newDate = currentDate.plusDays(3);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ("dd.MM.yyyy");
-    String newDateString = newDate.format(formatter);
+    private String newDateString;
 
+    @BeforeEach
+    public void newDate() {
+
+        LocalDate currentDate = LocalDate.now();
+        LocalDate newDate = currentDate.plusDays(3);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        newDateString = newDate.format(formatter);
+    }
 
     @Test
     void shouldOrderDeliveryCardWithValidValues() {
@@ -28,7 +35,7 @@ public class CardDeliveryTest {
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
         $(".button").click();
-        $(".notification__content").shouldHave(Condition.text(newDateString),Duration.ofSeconds(15));
+        $(".notification__content").shouldHave(Condition.text(newDateString), Duration.ofSeconds(15));
 
     }
 
